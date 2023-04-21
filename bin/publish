@@ -1,0 +1,16 @@
+#!/bin/bash
+set -ex
+cd "$(dirname "$0")/.."
+
+# prepare
+rm -fr .build
+git clone git@github.com:uchiru/clickhouse_exporter .build
+cd .build
+git checkout $1
+
+# build
+docker build -t sysregistry.runit.cc/clickhouse_exporter:$1 .
+docker push sysregistry.runit.cc/clickhouse_exporter:$1
+
+rm -fr .build
+echo "DONE :)"
